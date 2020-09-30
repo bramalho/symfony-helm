@@ -1,0 +1,38 @@
+resources:
+  limits:
+    cpu: 2
+    memory: 1024Mi
+  requests:
+    cpu: 0.25
+    memory: 256Mi
+
+mysql:
+  name: "mysql"
+  image: "bramalho/symfony-helm-mysql"
+  port: 3306
+  env:
+    secret:
+      MYSQL_DATABASE:
+        name: "database-secret"
+        key: "database"
+      MYSQL_ROOT_PASSWORD:
+        name: "database-secret"
+        key: "password"
+
+nginx:
+  name: "nginx"
+  image: "bramalho/symfony-helm-nginx"
+  port: 80
+  probes:
+    liveness: /healthz
+    readiness: /healthz
+
+phpfpm:
+  name: "php-fpm"
+  image: "bramalho/symfony-helm-php-fpm"
+  port: 9000
+  env:
+    secret:
+      DATABASE_URL:
+        name: "database-secret"
+        key: "url"
