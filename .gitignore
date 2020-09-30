@@ -14,3 +14,11 @@
 .phpunit.result.cache
 /phpunit.xml
 ###< symfony/phpunit-bridge ###
+
+###> docker ###
+/docker/mysql/data/*
+!/docker/mysql/data/.gitkeep
+###< docker ###
+
+/.idea
+.DS_Store

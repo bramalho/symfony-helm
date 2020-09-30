@@ -1,0 +1,42 @@
+version: '3.7'
+
+services:
+  nginx:
+    build:
+      args:
+        VERSION: $NGINX_VERSION
+      context: .
+      dockerfile: ./docker/nginx/Dockerfile
+      target: dev
+    volumes:
+      - ./assets:/app/public
+    depends_on:
+      - php-fpm
+    ports:
+      - 8000:80
+
+  php-fpm:
+    build:
+      args:
+        VERSION: $PHP_VERSION
+      context: .
+      dockerfile: ./docker/php-fpm/Dockerfile
+      target: dev
+    volumes:
+      - .:/app
+    command: sh -c 'composer install --no-interaction --optimize-autoloader && php-fpm'
+    depends_on:
+      - mysql
+
+  mysql:
+    build:
+      args:
+        VERSION: $MYSQL_VERSION
+      context: ./docker/mysql
+    environment:
+      MYSQL_DATABASE: $MYSQL_DATABASE
+      MYSQL_ROOT_PASSWORD: $MYSQL_ROOT_PASSWORD
+      MYSQL_USER: $MYSQL_USER
+      MYSQL_PASSWORD: $$MYSQL_PASSWORD
+    volumes:
+      - ./docker/mysql/data:/var/lib/mysql
