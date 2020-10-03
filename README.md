@@ -11,6 +11,8 @@ docker-compose up
 - [localhost:8000](http://localhost:8000)
 - [localhost:8000/products/1](http://localhost:8000/products/1)
 
+## Build Images
+
 ```bash
 docker build . -t bramalho/symfony-helm-mysql -f ./docker/mysql/Dockerfile \
     --build-arg VERSION=8.0.21
@@ -49,4 +51,25 @@ helm upgrade symfony-helm helm \
     --namespace symfony-helm
 
 kubectl delete all --all --all-namespaces
+```
+
+## Minikube & Helm
+
+```bash
+minikube start --vm=true --driver=hyperkit
+minikube addons enable ingress
+
+helm template helm
+
+helm install symfony-helm helm
+
+kubectl get services
+
+kubectl get pods
+
+minikube dashboard
+
+helm upgrade symfony-helm helm
+
+helm uninstall symfony-helm
 ```
