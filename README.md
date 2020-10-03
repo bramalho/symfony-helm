@@ -61,7 +61,7 @@ minikube addons enable ingress
 
 helm template helm
 
-helm install symfony-helm helm
+helm install symfony-helm helm --set-string phpfpm.env.plain.APP_ENV=prod,nginx.host=symfony-helm.io,imageTag=latest
 
 kubectl get services
 
